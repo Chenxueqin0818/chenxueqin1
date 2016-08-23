@@ -1,0 +1,42 @@
+public class Solution {
+    class Pair{ //定义一个Pair类，记录数组中数与数出现的频数
+        int num;
+        int cout;
+        public Pair(int num,int cout){
+        this.num=num;
+        this.cout=cout;}
+    }
+    public List<Integer> topKFrequent(int[] nums, int k) {
+        List<Integer> list=new ArrayList<Integer>();
+        if(nums==null || k>nums.length) return list;
+        HashMap<Integer,Integer>map=new HashMap<Integer,Integer>();//定义一个哈希表
+        int cout=0;
+      //  Arrays.sort(nums);
+        for (int num : nums){  //哈希表里面装入数值与数值出现的次数
+            if (map.containsKey(num)){
+                map.put(num,map.get(num)+1);
+            }else{
+                map.put(num,1);
+            }
+        }
+        PriorityQueue<Pair>quene=new PriorityQueue<Pair>(new Comparator<Pair>(){  //定义一个优先级队列
+            public int compare(Pair a,Pair b){
+                return a.cout-b.cout;//按自然顺序从小到大的排列
+            }
+        }
+            );
+            for (Map.Entry<Integer,Integer> entry:map.entrySet()){
+                Pair p=new Pair(entry.getKey(),entry.getValue());
+                quene.offer(p); //队尾加入元素 自动加入值最小的元素
+                if (quene.size()>k){
+                    quene.poll(); //移除第一个元素，即移除最小的元素
+                }
+            }
+            List<Integer> result=new ArrayList<Integer>();
+            while (quene.size()>0){
+                result.add(quene.poll().num); //前K个高频数
+            }
+            Collections.reverse(result); //反转
+        return result;
+    }
+}
