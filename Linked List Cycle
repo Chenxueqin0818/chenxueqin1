@@ -1,0 +1,16 @@
+class Solution(object):
+    def detectCycle(self, head):
+        if head==None or head.next==None:
+            return None
+        slow=head
+        fast=head
+        while fast.next!=None and fast.next.next!=None:
+            slow=slow.next
+            fast=fast.next.next
+            if slow==fast:  //确定有环再找环的入口
+                slow=head
+                while fast!=slow: //a+b+c+b=2*(b+c)->所以a=c即从头开始每走一步和fast每走一步，交点即为入口点。
+                    fast=fast.next
+                    slow=slow.next
+                return slow
+        return None
